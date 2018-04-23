@@ -4,71 +4,90 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-	public float moveSpeed;
-	public float jumpForce;
+    public float moveSpeed;
+    public float jumpForce;
 
-	public int curHealth;
-	public int maxHealth = 100;
+    public int curHealth;
+    public int maxHealth = 100;
 
 
-	private Rigidbody2D myRigidbody;
+    private Rigidbody2D myRigidbody;
 
-	public bool grounded;
-	public LayerMask whatIsGround;
+    public bool grounded;
+    public LayerMask whatIsGround;
 
-	private Collider2D myCollider;
+    private Collider2D myCollider;
 
-	// Use this for initialization
-	void Start () 
-	{
-		myRigidbody = GetComponent<Rigidbody2D> ();
+    public GameManager theGameManager;
 
-		myCollider = GetComponent<Collider2D> ();
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start()
+    {
+        myRigidbody = GetComponent<Rigidbody2D>();
 
-		grounded = Physics2D.IsTouchingLayers (myCollider, whatIsGround);
+        myCollider = GetComponent<Collider2D>();
 
-		myRigidbody.velocity = new Vector2 (moveSpeed, myRigidbody.velocity.y);
+    }
 
-		if (Input.GetKeyDown (KeyCode.Space) || Input.GetMouseButtonDown (0)) {
-			if (grounded) {
-				myRigidbody.velocity = new Vector2 (myRigidbody.velocity.x, jumpForce);
-			}
-		}
-	}
+    // Update is called once per frame
+    void Update() {
 
-//		void FixedUpdate()
-//		{
-//			float h = Input.GetAxis("Horizontal");
-//
-//			rb2d.AddForce((Vector2.right * speed) * h);
-//
-//			if (rb2d.velocity.x > maxSpeed) 
-//			{
-//				rb2d.velocity = new Vector2(maxSpeed, rb2d.velocity.y);
-//			}
-//
-//			if (rb2d.velocity.x < -maxSpeed) 
-//			{
-//				rb2d.velocity = new Vector2(-maxSpeed, rb2d.velocity.y);
-//			}
-//		}
-//
-//		void Die()
-//		{
-//			Application.LoadLevel(Application.loadedLevel);
-//		}
-//
-//		public void Damage(int dmg)
-//		{
-//			audioSource.Play();
-//			curHealth -= dmg;
-//		}
-//
+        grounded = Physics2D.IsTouchingLayers(myCollider, whatIsGround);
+
+        myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);
+
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        {
+            if (grounded)
+            {
+                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, jumpForce);
+            }
+
+            if (curHealth > maxHealth) {
+                curHealth = maxHealth;
+            }
+            if (curHealth <= 0) {
+                Die();
+            }
+        }
+    }
+
+    //		void FixedUpdate()
+    //		{
+    //			float h = Input.GetAxis("Horizontal");
+    //
+    //			rb2d.AddForce((Vector2.right * speed) * h);
+    //
+    //			if (rb2d.velocity.x > maxSpeed) 
+    //			{
+    //				rb2d.velocity = new Vector2(maxSpeed, rb2d.velocity.y);
+    //			}
+    //
+    //			if (rb2d.velocity.x < -maxSpeed) 
+    //			{
+    //				rb2d.velocity = new Vector2(-maxSpeed, rb2d.velocity.y);
+    //			}
+    //		}
+    //
+    void Die()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+    }
+
+    public void Damage(int dmg)
+    {
+        //audioSource.Play();
+        curHealth -= dmg;
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "killbox")
+        {
+            theGameManager.RestartGame();
+        }
+    }
+
 //		void OnTriggerEnter2D(Collider2D col)
 //		{
 //			if (col.CompareTag ("Coin")) 
