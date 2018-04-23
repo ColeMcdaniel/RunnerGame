@@ -7,6 +7,10 @@ public class PlayerMovement : MonoBehaviour {
 	public float moveSpeed;
 	public float jumpForce;
 
+	public int curHealth;
+	public int maxHealth = 100;
+
+
 	private Rigidbody2D myRigidbody;
 
 	public bool grounded;
@@ -15,7 +19,8 @@ public class PlayerMovement : MonoBehaviour {
 	private Collider2D myCollider;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		myRigidbody = GetComponent<Rigidbody2D> ();
 
 		myCollider = GetComponent<Collider2D> ();
@@ -29,12 +34,46 @@ public class PlayerMovement : MonoBehaviour {
 
 		myRigidbody.velocity = new Vector2 (moveSpeed, myRigidbody.velocity.y);
 
-		if (Input.GetKeyDown (KeyCode.Space) || Input.GetMouseButtonDown (0)) 
-		{
-			if(grounded) 
-			{
+		if (Input.GetKeyDown (KeyCode.Space) || Input.GetMouseButtonDown (0)) {
+			if (grounded) {
 				myRigidbody.velocity = new Vector2 (myRigidbody.velocity.x, jumpForce);
 			}
-		}		
+		}
 	}
-}
+
+//		void FixedUpdate()
+//		{
+//			float h = Input.GetAxis("Horizontal");
+//
+//			rb2d.AddForce((Vector2.right * speed) * h);
+//
+//			if (rb2d.velocity.x > maxSpeed) 
+//			{
+//				rb2d.velocity = new Vector2(maxSpeed, rb2d.velocity.y);
+//			}
+//
+//			if (rb2d.velocity.x < -maxSpeed) 
+//			{
+//				rb2d.velocity = new Vector2(-maxSpeed, rb2d.velocity.y);
+//			}
+//		}
+//
+//		void Die()
+//		{
+//			Application.LoadLevel(Application.loadedLevel);
+//		}
+//
+//		public void Damage(int dmg)
+//		{
+//			audioSource.Play();
+//			curHealth -= dmg;
+//		}
+//
+//		void OnTriggerEnter2D(Collider2D col)
+//		{
+//			if (col.CompareTag ("Coin")) 
+//			{
+//				gm.points += 1;
+//			}
+//		}
+	}
