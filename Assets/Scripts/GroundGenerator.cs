@@ -44,7 +44,7 @@ public class GroundGenerator : MonoBehaviour
 
 			groundSelector = Random.Range (0, theGrounds.Length);
 
-			transform.position = new Vector3 (transform.position.x + groundWidths[groundSelector] + distanceBetween, transform.position.y, transform.position.z);
+			transform.position = new Vector3 (transform.position.x + groundWidths[groundSelector] + d istanceBetween, transform.position.y, transform.position.z);
 
 			Instantiate (/*theGround, */ theGrounds[groundSelector], transform.position, transform.rotation);
 
