@@ -10,11 +10,28 @@ public class GroundGenerator : MonoBehaviour
 
 	private float groundWidth;
 
+	public float distanceBetweenMin;
+	public float distanceBetweenMax;
+
+	public GameObject[] theGrounds;
+	private int groundSelector;
+	private float[] groundWidths;
+
+	//public ObjectPooler theObjectPool;
+
 
 	// Use this for initialization
 	void Start () 
 	{
-		groundWidth = theGround.GetComponent<BoxCollider2D> ().size.x;	
+//		groundWidth = theGround.GetComponent<BoxCollider2D> ().size.x;
+
+		groundWidths = new float[theGrounds.Length];
+
+		for (int i = 0; i < theGrounds.Length; i++) 
+		{
+			groundWidths [i] = theGrounds [i].GetComponent<BoxCollider2D>().size.x;
+		}
+	
 	}
 	
 	// Update is called once per frame
@@ -23,9 +40,19 @@ public class GroundGenerator : MonoBehaviour
 	
 		if (transform.position.x < generationPoint.position.x) 
 		{
-			transform.position = new Vector3 (transform.position.x + groundWidth + distanceBetween, transform.position.y, transform.position.z);
+			distanceBetween = Random.Range (distanceBetweenMin, distanceBetweenMax);
 
-			Instantiate (theGround, transform.position, transform.rotation);
+			groundSelector = Random.Range (0, theGrounds.Length);
+
+			transform.position = new Vector3 (transform.position.x + groundWidths[groundSelector] + distanceBetween, transform.position.y, transform.position.z);
+
+			Instantiate (/*theGround, */ theGrounds[groundSelector], transform.position, transform.rotation);
+
+//			GameObject newGround = theObjectPool.GetPooledObject();
+
+//			newGround.transform.position = transform.position;
+//			newGround.transform.rotation = transform.position;
+//			newGround.SetActive (true);
 		}
 	}
 }
